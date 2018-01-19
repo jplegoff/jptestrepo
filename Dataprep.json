@@ -1,0 +1,223 @@
+{
+  "front-version": "2.13.1",
+  "version": 3,
+  "nodes": [
+    {
+      "type": "Project",
+      "id": "77675df7-54b6-438a-a77c-cb13895f846b",
+      "lastModified": "2018-01-19T10:24:12.847+01:00",
+      "name": "Dataprep",
+      "remoteModification": "2018-01-19T09:24:13.298Z"
+    },
+    {
+      "type": "Scenario",
+      "id": "d84a6329-335f-4cf4-a14b-d0e65e79bc20",
+      "lastModified": "2018-01-19T10:19:32.326+01:00",
+      "name": "Test CSV Upload",
+      "requestOrder": [
+        "Login",
+        "Get user info",
+        "Upload CSV"
+      ],
+      "parentId": "77675df7-54b6-438a-a77c-cb13895f846b"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+        "name": "GET"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": [
+            {
+              "enabled": true,
+              "encoded": true,
+              "name": "username",
+              "value": "verifier%40test.talend.com"
+            },
+            {
+              "enabled": true,
+              "encoded": true,
+              "name": "password",
+              "value": "Admin123%2B"
+            }
+          ]
+        },
+        "host": "${\"server-base-url\"}",
+        "path": "/login"
+      },
+      "id": "3ae3f0bf-b1ad-4d2e-b1f4-33156d8c07ff",
+      "lastModified": "2018-01-19T10:18:46.888+01:00",
+      "name": "Login",
+      "headers": [],
+      "assertions": [
+        {
+          "comparison": "Matches",
+          "subject": "ResponseStatus",
+          "path": "code",
+          "value": "/^2[0-9]{2}$/g"
+        },
+        {
+          "comparison": "DoesNotExist",
+          "subject": "ResponseBody",
+          "path": "content",
+          "value": ""
+        },
+        {
+          "comparison": "Contains",
+          "subject": "ResponseHeader",
+          "path": "authorization",
+          "value": "Bearer"
+        }
+      ],
+      "metaInfo": {
+        "ownerId": "auth0|5a61b4cb77507c060f51b943"
+      },
+      "parentId": "d84a6329-335f-4cf4-a14b-d0e65e79bc20"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+        "name": "GET"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "host": "${\"server-base-url\"}",
+        "path": "/api/user"
+      },
+      "id": "becb0008-f1ec-499d-a6ca-eee77d8706b3",
+      "lastModified": "2018-01-19T10:18:12.318+01:00",
+      "name": "Get user info",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "${\"Dataprep\".\"Test CSV Upload\".\"Login\".\"response\".\"headers\".\"authorization\"}"
+        }
+      ],
+      "assertions": [
+        {
+          "comparison": "Matches",
+          "subject": "ResponseStatus",
+          "path": "code",
+          "value": "/^2[0-9]{2}$/g"
+        },
+        {
+          "comparison": "Exists",
+          "subject": "ResponseBody",
+          "path": "content",
+          "value": ""
+        },
+        {
+          "comparison": "Equals",
+          "subject": "ResponseJsonBody",
+          "path": "$.email",
+          "value": "verifier@test.talend.com"
+        }
+      ],
+      "metaInfo": {
+        "ownerId": "auth0|5a61b4cb77507c060f51b943"
+      },
+      "parentId": "d84a6329-335f-4cf4-a14b-d0e65e79bc20"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "project_name,owner_id,count(p.project_id)\nAxonite,google-oauth2|108303673775260317942,2\nSandBox,google-oauth2|112166217593344490618,2\npartnerka_bumaga,google-oauth2|101489267837971955397,2\n"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": [
+            {
+              "enabled": true,
+              "name": "name",
+              "value": "TST${random(1000)}.csv"
+            }
+          ]
+        },
+        "host": "${\"server-base-url\"}",
+        "path": "/upload/api/datasets"
+      },
+      "id": "e4b481e5-9e92-421f-9742-ad53f841613e",
+      "lastModified": "2018-01-19T10:24:12.367+01:00",
+      "name": "Upload CSV",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "text/plain"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "${\"Dataprep\".\"Test CSV Upload\".\"Login\".\"response\".\"headers\".\"authorization\"}"
+        }
+      ],
+      "assertions": [
+        {
+          "comparison": "Matches",
+          "subject": "ResponseStatus",
+          "path": "code",
+          "value": "/^2[0-9]{2}$/g"
+        }
+      ],
+      "metaInfo": {
+        "ownerId": "auth0|5a61b4cb77507c060f51b943"
+      },
+      "parentId": "d84a6329-335f-4cf4-a14b-d0e65e79bc20"
+    },
+    {
+      "type": "Context",
+      "id": "b817f6fa-961b-492f-bcea-5b514a5f92b8",
+      "lastModified": "2018-01-19T10:17:30.567+01:00",
+      "name": "inegration",
+      "variables": [
+        {
+          "enabled": true,
+          "name": "server-base-url",
+          "value": "https://talend-cloud-integration-tdp.datapwn.com"
+        }
+      ]
+    }
+  ]
+}
