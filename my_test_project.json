@@ -1,0 +1,21 @@
+{
+  "front-version": "2.103.0",
+  "version": 3,
+  "nodes": [
+    {
+      "type": "Project",
+      "id": "caad8cc9-54ca-4573-b81a-f2a2f4f564a8",
+      "lastModified": "2018-07-02T15:15:10.579+02:00",
+      "name": "my test project",
+      "remoteModification": "2018-07-02T15:15:02.134+02:00"
+    },
+    {
+      "type": "Scenario",
+      "id": "ed1ce23f-f7eb-4940-ac5a-e53e82d8647b",
+      "lastModified": "2018-07-02T15:15:03.396+02:00",
+      "name": "Scenario 1",
+      "requestOrder": [],
+      "parentId": "caad8cc9-54ca-4573-b81a-f2a2f4f564a8"
+    }
+  ]
+}
